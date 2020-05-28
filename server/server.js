@@ -5,10 +5,10 @@ var port      = 3000
 
 const mariadb = require('mariadb')
 const pool = mariadb.createPool({
-  database: 'test_scan',
-  host: 'localhost', 
-  user:'root', 
-  password: '',
+  database: 'jcc5ozu6r7vw4j8d',
+  host: 'un0jueuv2mam78uv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', 
+  user:'igudkqgtpmdhh9bm', 
+  password: 'mj3lkpro8k8j2ovz',
   port: 3306,
   connectionLimit: 5
 })
