@@ -1,0 +1,65 @@
+<!doctype html>
+
+<html>
+  <head>
+    <style>
+      h1 {
+        text-align: center;
+      }
+      table {
+        width: 70%;
+        margin-left: 15%;
+        margin-right: 15%;
+      }
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+    <title>Inventory Management System</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      $(function () {
+        var socket = io();
+        $('form').submit(function(e) {
+          e.preventDefault(); // prevents page reloading
+          socket.emit('update view', $('#m').val());
+          $('#m').val('');
+          return false;
+        });
+
+        socket.on('update view', function(msg){
+          $('#dataTbl tbody').empty();
+          console.log(msg);
+          jQuery.each(msg, function(i, val) {
+            $('#dataTbl > tbody:last-child').append("\
+              <tr>                                \
+                <td>" + val.id          + "</td>  \
+                <td>" + val.code        + "</td>  \
+                <td>" + val.employee_id + "</td>  \
+                <td>" + val.date_time   + "</td>  \
+                <td>" + val.count       + "</td>  \
+              </tr>");
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Inventory Management System</h1>
+    <table id="dataTbl">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Barcode</th>
+          <th>Nhan vien</th>
+          <th>Thoi gian scan</th>
+          <th>So luong</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </body>
+</html>

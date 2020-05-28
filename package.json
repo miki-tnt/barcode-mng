@@ -1,0 +1,20 @@
+{
+  "name": "api-hackathon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
+  },
+  "author": "Zachary Lester",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.17.1",
+    "kerberos": "0.0.18",
+    "mariadb": "^2.4.0",
+    "morgan": "^1.8.2",
+    "socket.io": "^2.3.0"
+  }
+}
