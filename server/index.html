@@ -34,12 +34,14 @@
           console.log(msg);
           jQuery.each(msg, function(i, val) {
             $('#dataTbl > tbody:last-child').append("\
-              <tr>                                \
-                <td>" + val.id          + "</td>  \
-                <td>" + val.code        + "</td>  \
-                <td>" + val.employee_id + "</td>  \
-                <td>" + val.date_time   + "</td>  \
-                <td>" + val.count       + "</td>  \
+              <tr>                               \
+                <td>" + val.scan_date  + "</td>  \
+                <td>" + val.location   + "</td>  \
+                <td>" + val.type       + "</td>  \
+                <td>" + val.item_cd    + "</td>  \
+                <td>" + val.lot        + "</td>  \
+                <td>" + val.quantity   + "</td>  \
+                <td>" + val.user       + "</td>  \
               </tr>");
           });
         });
@@ -51,11 +53,13 @@
     <table id="dataTbl">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Barcode</th>
-          <th>Nhan vien</th>
-          <th>Thoi gian scan</th>
-          <th>So luong</th>
+          <th>Scan date</th>
+          <th>Location</th>
+          <th>Type</th>
+          <th>Item CD</th>
+          <th>Lot</th>
+          <th>Quantity</th>
+          <th>User</th>
         </tr>
       </thead>
       <tbody>

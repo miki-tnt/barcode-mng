@@ -3,15 +3,33 @@ var socket    = require('socket.io')
 var app       = express()
 var port      = process.env.PORT || 3000
 
+// Local
 const mariadb = require('mariadb')
-const pool = mariadb.createPool({
-  database: 'jcc5ozu6r7vw4j8d',
-  host: 'un0jueuv2mam78uv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', 
-  user:'igudkqgtpmdhh9bm', 
-  password: 'mj3lkpro8k8j2ovz',
-  port: 3306,
-  connectionLimit: 5
-})
+
+pool = null
+
+if (process.env.PORT) {
+  // Cloud
+  pool = mariadb.createPool({
+    database: 'jcc5ozu6r7vw4j8d',
+    host: 'un0jueuv2mam78uv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', 
+    user:'igudkqgtpmdhh9bm', 
+    password: 'mj3lkpro8k8j2ovz',
+    port: 3306,
+    connectionLimit: 5
+  })
+}
+else {
+  // Local
+  pool = mariadb.createPool({
+    database: 'test_scan',
+    host: 'localhost', 
+    user:'root', 
+    password: '',
+    port: 3306,
+    connectionLimit: 5
+  })
+}
 
 server = app.listen(port, function () {
   console.log('JS API Hackathon listening on ' + port)
@@ -60,13 +78,13 @@ app.post('/scan', function (req, res) {
   // sending msg to websocket server
   console.log('Called POST method')
   console.log(req.query)
-
-  let count = 1 // TODO: add logic to increase
+  //console.log(pool)
 
   //// Insert into db
   pool.getConnection()
     .then(conn => {
-      conn.query("INSERT INTO `scanned_data`(`code`, `employee_id`, `date_time`, `count`) VALUES (?,?,?,?)", [req.query.code, req.query.employeeId, req.query.dateTime, 1])
+      conn.query("INSERT INTO `scanned_data`(`scan_date`, `location`, `type`, `item_cd`, `lot`, `quantity`, `user`) VALUES (?,?,?,?,?,?,?)", 
+                  [req.query.scan_date, req.query.location, req.query.type, req.query.item_cd, req.query.lot, req.query.quantity, req.query.user])
       .then((dbres) => {
         console.log(dbres) // { affectedRows: x, insertId: x, warningStatus: x }
         updateView(conn);
@@ -74,24 +92,24 @@ app.post('/scan', function (req, res) {
       })
       .catch(err => {
         //handle error
-        //console.log(err) 
+        console.log(err) 
         if (err.errno == 1062){
-          console.log('DUPLICATE barcode entry');
-          conn.query("SELECT * FROM `scanned_data` WHERE `code`=?;", [req.query.code])
+          console.log('DUPLICATE item_cd entry');
+          conn.query("SELECT * FROM `scanned_data` WHERE `item_cd`=?;", [req.query.item_cd])
           .then((rows) => {
             console.log("DUPLICATED data:")
             console.log(rows[0])
-            new_count = rows[0].count
-            ++new_count
+            new_qty = parseInt(rows[0].quantity)
+            new_qty += parseInt(req.query.quantity)
             conn.query("UPDATE `scanned_data`   \
-                        SET `employee_id` = ?,  \
-                            `date_time`   = ?,  \
-                            `count`       = ?   \
-                        WHERE `code` = ?",
-                        [ req.query.employeeId,
-                          req.query.dateTime,
-                          new_count,
-                          req.query.code])
+                        SET `scan_date` = ?,  \
+                            `user`      = ?,  \
+                            `quantity`  = ?   \
+                        WHERE `item_cd` = ?",
+                        [ req.query.scan_date,
+                          req.query.user,
+                          new_qty,
+                          req.query.item_cd])
             .then((dbres) => {
               console.log(dbres)
               updateView(conn)
@@ -101,13 +119,14 @@ app.post('/scan', function (req, res) {
               console.log(err)
               conn.end()
             })
-
+            conn.end()
           })
           .catch(err => {
             //handle error
             console.log(err)
             conn.end()
           })
+          conn.end()
         }
         conn.end()
       })
