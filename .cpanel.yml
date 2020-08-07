@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/user/public_html/tespapp
-    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp server/index.html $DEPLOYPATH
