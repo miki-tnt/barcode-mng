@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/user/public_html/tespapp
+    - export DEPLOYPATH=/home/user/public_html/barcode
     - /bin/cp server/index.html $DEPLOYPATH

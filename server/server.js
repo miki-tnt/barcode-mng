@@ -22,10 +22,10 @@ if (process.env.PORT) {
 else {
   // Local
   pool = mariadb.createPool({
-    database: 'test_scan',
+    database: 'phanmem1_barcode',
     host: 'localhost', 
-    user:'root', 
-    password: '',
+    user:'phanmem1_tungnt', 
+    password: 'tungnt@12345',
     port: 3306,
     connectionLimit: 5
   })
