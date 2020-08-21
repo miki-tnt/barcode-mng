@@ -11,10 +11,10 @@ pool = null
 if (process.env.PORT) {
   // Cloud
   pool = mariadb.createPool({
-    database: 'jcc5ozu6r7vw4j8d',
-    host: 'un0jueuv2mam78uv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', 
-    user:'igudkqgtpmdhh9bm', 
-    password: 'mj3lkpro8k8j2ovz',
+    database: 'phanmem1_barcode',
+    host: '103.221.223.27', 
+    user:'phanmem1_tungnt', 
+    password: 'tungnt@12345',
     port: 3306,
     connectionLimit: 5
   })
