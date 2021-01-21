@@ -15,6 +15,6 @@
     "kerberos": "0.0.18",
     "mariadb": "^2.4.0",
     "morgan": "^1.8.2",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.4.0"
   }
 }
